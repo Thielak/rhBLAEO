@@ -3,7 +3,7 @@
 // @namespace revilheart
 // @author revilheart
 // @description Adds some cool features to BLAEO.
-// @version 1.2
+// @version 1.3
 // @match http://backlog-deepness.rhcloud.com/*
 // @match https://backlog-deepness.rhcloud.com/*
 // @grant GM_xmlhttpRequest
@@ -17,27 +17,7 @@
 
 (function() {
     "use strict";
-    var rhBLAEO, Key, DOM_Parser, DOM;
-    rhBLAEO = GM_getValue("rhBLAEO");
-    if (rhBLAEO) {
-        for (Key in rhBLAEO.Storage) {
-            if (typeof GM_getValue(Key) == "undefined") {
-                GM_setValue(Key, rhBLAEO.Storage[Key]);
-            }
-        }
-        GM_deleteValue("rhBLAEO");
-    }
-    if (typeof GM_getValue("SteamID64") == "undefined") {
-        if (typeof GM_getValue("SteamID") != "undefined") {
-            GM_setValue("SteamID64", GM_getValue("SteamID"));
-            GM_deleteValue("SteamID");
-        } else {
-            GM_setValue("SteamID64", "");
-        }
-    }
-    if (typeof GM_getValue("TLCCurrentMonth") == "undefined") {
-        GM_setValue("TLCCurrentMonth", "");
-    }
+    var DOM_Parser, DOM;    
     DOM_Parser = new DOMParser();
     DOM = {
         parse: function(HTML) {
@@ -48,6 +28,25 @@
         loadFeatures();
     });
     loadFeatures();
+    
+    function setDefaultValues() {
+        var DefaultValues, Key;
+        DefaultValues = {
+            Username: "?",
+            SteamID64: "",
+            SteamAPIKey: "",
+            OwnedGames: [],
+            LastSync: 0,
+            TLCCurrentMonth: "",
+            TLCList: "",
+            TLCGames: [],
+        };
+        for (Key in DefaultValues) {
+            if (typeof GM_getValue(Key) == "undefined") {
+                GM_setValue(Key, DefaultValues[Key]);
+            }
+        }
+    }
 
     function loadFeatures() {
         var TLCList;
@@ -116,7 +115,7 @@
 
             function saveSMSettings(Callback) {
                 SMSave.textContent = "Saving...";
-                if (GM_getValue("Username") == "?") {
+                if (!GM_getValue("Username")) {
                     GM_setValue("Username", document.getElementsByClassName("navbar-btn")[0].href.match(/\/users\/(.*?)$/)[1]);
                 }
                 if (!GM_getValue("SteamID64")) {
@@ -160,6 +159,7 @@
                 for (I = 0, N = Games.length; I < N; ++I) {
                     OwnedGames.push(Games[I].appid);
                 }
+                GM_setValue("OwnedGames", OwnedGames);
                 GM_setValue("LastSync", new Date().getTime());
                 Callback();
             },
@@ -184,7 +184,7 @@
                 var List;
                 List = DOM.parse(Response.responseText).querySelector("[id*='theme-list']");
                 if (List) {
-                    GM_setValue("TLCList", List.href.match(/\/posts\/(.*?)$/)[1]);
+                    GM_setValue("TLCList", List.getAttribute("href").match(/\/posts\/(.*?)$/)[1]);
                     GM_setValue("TLCCurrentMonth", TLCCurrentMonth);
                 }
             },
@@ -208,12 +208,11 @@
                 tagTLCOwned(Items[I]);
             }
         }
+        GM_setValue("TLCGames", TLCGames);
         tagTLCStatus("Beaten", Items, "rgb(92 ,184, 92)", function() {
             tagTLCStatus("Completed", Items, "rgb(91, 192, 222)", function() {
                 document.querySelector("[id*='counter']").innerHTML =
                     "<font size=\"4\"><b>" + Items.length + " Games</b></font>";
-                GM_setValue("TLCGames", TLCGames);
-                GM_setValue("OwnedGames", OwnedGames);
             });
         });
     }
