@@ -3,7 +3,7 @@
 // @namespace revilheart
 // @author revilheart
 // @description Adds some cool features to BLAEO.
-// @version 1.3
+// @version 1.3.1
 // @match http://backlog-deepness.rhcloud.com/*
 // @match https://backlog-deepness.rhcloud.com/*
 // @grant GM_xmlhttpRequest
@@ -24,6 +24,7 @@
             return DOM_Parser.parseFromString(HTML, "text/html");
         },
     };
+    setDefaultValues();
     document.addEventListener("turbolinks:load", function() {
         loadFeatures();
     });
