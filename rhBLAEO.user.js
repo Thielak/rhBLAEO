@@ -3,7 +3,7 @@
 // @namespace revilheart
 // @author revilheart
 // @description Adds some cool features to BLAEO.
-// @version 1.3.1
+// @version 1.3.2
 // @match http://backlog-deepness.rhcloud.com/*
 // @match https://backlog-deepness.rhcloud.com/*
 // @grant GM_xmlhttpRequest
@@ -116,7 +116,7 @@
 
             function saveSMSettings(Callback) {
                 SMSave.textContent = "Saving...";
-                if (!GM_getValue("Username")) {
+                if (!GM_getValue("Username") || (GM_getValue("Username") == "?")) {
                     GM_setValue("Username", document.getElementsByClassName("navbar-btn")[0].href.match(/\/users\/(.*?)$/)[1]);
                 }
                 if (!GM_getValue("SteamID64")) {
@@ -124,7 +124,7 @@
                         method: "GET",
                         url: "/users/" + GM_getValue("Username"),
                         onload: function(Response) {
-                            GM_setValue("SteamID64", DOM.parse(Response.responseText).getElementsByClassName("btn-profile")[0].href.match(/\/profiles\/(.*?)$/)[1]);
+                            GM_setValue("SteamID64", DOM.parse(Response.responseText).getElementsByClassName("btn-profile")[0].getAttribute("href").match(/\/profiles\/(.*?)$/)[1]);
                             SMSave.textContent = "Save";
                             Callback();
                         },
