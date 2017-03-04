@@ -3,7 +3,9 @@
 // @namespace revilheart
 // @author revilheart
 // @description Adds some cool features to BLAEO.
-// @version 1.3.2
+// @version 1.4
+// @downloadURL https://github.com/revilheart/rhBLAEO/raw/master/rhBLAEO.user.js
+// @updateURL https://github.com/revilheart/rhBLAEO/raw/master/rhBLAEO.meta.js
 // @match http://backlog-deepness.rhcloud.com/*
 // @match https://backlog-deepness.rhcloud.com/*
 // @grant GM_xmlhttpRequest
@@ -194,7 +196,7 @@
 
     function checkTLCList() {
         var I, N, Items, TLCGames, OwnedGames, AppID;
-        Items = document.getElementsByClassName("panel-default")[0].getElementsByTagName("ul")[0].children;
+        Items = document.getElementsByClassName("panel-default")[0].getElementsByTagName("li");
         TLCGames = GM_getValue("TLCGames");
         OwnedGames = GM_getValue("OwnedGames");
         for (I = 0, N = Items.length; I < N; ++I) {
