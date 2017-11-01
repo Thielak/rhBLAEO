@@ -3,11 +3,11 @@
 // @namespace revilheart
 // @author revilheart
 // @description Adds some cool features to BLAEO.
-// @version 1.4
+// @version 1.4.1
 // @downloadURL https://github.com/revilheart/rhBLAEO/raw/master/rhBLAEO.user.js
 // @updateURL https://github.com/revilheart/rhBLAEO/raw/master/rhBLAEO.meta.js
-// @match http://backlog-deepness.rhcloud.com/*
-// @match https://backlog-deepness.rhcloud.com/*
+// @match http://www.backlog-assassins.net/*
+// @match https://www.backlog-assassins.net/*
 // @grant GM_xmlhttpRequest
 // @grant GM_setValue
 // @grant GM_getValue
